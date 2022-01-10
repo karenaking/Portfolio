@@ -1,0 +1,8 @@
+var first = prompt("enter first number");
+var second = prompt("enter second number");
+var sum = Number(first) + Number(second);
+var divide = Number(first) / Number(second);
+var multiply = Number(first) * Number(second);
+alert(sum);
+alert(divide);
+alert(multiply);
