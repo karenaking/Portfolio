@@ -1,0 +1,32 @@
+/*
+Write a query that grabs order information for each customer who has become a member within the last 3 months, and who has at least
+$5,000 in orders, counting backwards from today's current_date. The hypothetical database contains duplicates, so group on order_id.
+*/
+
+
+with customer_filter as 
+(select c.customer_id
+      , c.concat(first_name, last_name) as customer_name
+      , c.enrollment_date
+ from customers c 
+ where c.enrollment_date <= current_date - 90),
+order_filter as 
+(select o.customer_id
+      , o.order_id
+      , o.cost
+      , o.order_date
+ from order o
+ where o.cost >= 5000
+ group by o.customer_id
+        , o.order_id
+        , o.cost
+        , o.order_date)
+select cf.customer_id 
+     , cf.customer_name
+     , cf.enrollment_date
+     , of.order_id
+     , of.cost
+     , of.order_date
+from customer_filter cf 
+join order_filter of 
+on cf.customer_id = of.order_id;
